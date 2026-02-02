@@ -90,6 +90,12 @@ export const configSchema = {
     _description: 'The default currency for the application. Specify the currency code (e.g., KES, UGX, GBP).',
     _default: 'KES',
   },
+  waiverBillableServiceUuid: {
+    _type: Type.String,
+    _description:
+      'Billable service UUID to represent waivers/discounts as negative line items. Leave empty to force explicit configuration.',
+    _default: '',
+  },
   pageSize: {
     _type: Type.Number,
     _description: 'The default page size',
@@ -134,5 +140,6 @@ export interface BillingConfig {
     billableService: string;
   };
   defaultCurrency: string;
+  waiverBillableServiceUuid: string;
   pageSize: number;
 }
