@@ -8,6 +8,7 @@ import { createBillWaiverPayload } from './utils';
 import { calculateTotalAmount, convertToCurrency } from '../../helpers';
 import { processBillPayment } from '../../billing.resource';
 import { useBillableItems } from '../../billing-form/billing-form.resource';
+import type { BillingConfig } from '../../config-schema';
 import type { LineItem, MappedBill } from '../../types';
 import { apiBasePath } from '../../constants';
 import styles from './bill-waiver-form.scss';
@@ -23,7 +24,7 @@ const BillWaiverForm: React.FC<BillWaiverFormProps> = ({ bill, lineItems, setPat
   const [waiverAmount, setWaiverAmount] = useState(0);
   const { lineItems: billableLineItems } = useBillableItems();
   const totalAmount = calculateTotalAmount(lineItems);
-  const { defaultCurrency } = useConfig();
+  const { defaultCurrency, waiverBillableServiceUuid } = useConfig<BillingConfig>();
   const { mutate } = useSWRConfig();
 
   if (lineItems?.length === 0) {
@@ -34,9 +35,9 @@ const BillWaiverForm: React.FC<BillWaiverFormProps> = ({ bill, lineItems, setPat
     const waiverEndPointPayload = createBillWaiverPayload(
       bill,
       waiverAmount,
-      totalAmount,
       lineItems,
       billableLineItems,
+      waiverBillableServiceUuid,
     );
 
     try {
